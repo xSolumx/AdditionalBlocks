@@ -1,0 +1,11 @@
+name: AdditionalBlocks
+version: '${project.version}'
+main: com.mcrebels.additionalblocks.additionalblocks.AdditionalBlocks
+api-version: 1.18
+authors: [ xSolum ]
+description: add more blocks
+commands:
+  ci:
+    description: opens block inventory
+  openinv:
+    description: ^^
