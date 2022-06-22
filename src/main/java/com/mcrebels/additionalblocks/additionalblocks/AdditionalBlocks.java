@@ -47,26 +47,11 @@ public final class AdditionalBlocks extends JavaPlugin {
     @Override
     public void onEnable() {
         additionalBlocks = this;
-        // Download resource pack
         this.getLogger().log(Level.INFO,"Downloading resource pack...");
-        /*try (BufferedInputStream in = new BufferedInputStream(new URL("https://www.dropbox.com/s/loc30hzy339shsd/mcrebelspack.zip?dl=1").openStream());
-
-             FileOutputStream fileOutputStream = new FileOutputStream(getDataFolder()+"/mcrebelspack.zip")) {
-            byte dataBuffer[] = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                fileOutputStream.write(dataBuffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.getLogger().log(Level.WARNING,"IOException");
-        }*/
-
-
-        //Downloads the file from source and directly unpacks it
+        //Downloads resource pack file from source and directly unpacks it
+        //Would be nice to set up an auto release for the texture pack on github for this
         try {
-            //File f = new File(new URI(new URL("https://www.dropbox.com/s/p0i7lmxcm3l11xp/mcrebelsTesting.zip?dl=1").getFile()));
-            BufferedInputStream is = new BufferedInputStream(new URL("https://www.dropbox.com/s/p0i7lmxcm3l11xp/mcrebelsTesting.zip?dl=1").openStream());
+            BufferedInputStream is = new BufferedInputStream(new URL("https://www.dropbox.com/s/h9fgwyzva2xddez/pack.zip?dl=1").openStream());
             this.getLogger().log(Level.INFO,"Unpacking resource pack...");
             unzip(is, Paths.get(getDataFolder() + "/pack"));
             this.getLogger().log(Level.WARNING, "Extraction succesful");
@@ -75,7 +60,8 @@ public final class AdditionalBlocks extends JavaPlugin {
         }
 
         //Attempts to get all Json files in the target directory
-        File directoryPath = new File(getDataFolder()+"/pack/assets/minecraft/models/custom");
+        File directoryPath = new File(getDataFolder()+"/pack/assets/mcrebels/models");
+
         FilenameFilter jsonfilter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
@@ -87,10 +73,11 @@ public final class AdditionalBlocks extends JavaPlugin {
                 }
             }
         };
+
         File[] filesList = directoryPath.listFiles(jsonfilter);
         List<File> modelList = new ArrayList<File>();
 
-        //logs the files found to console
+        //Adds model files to
         for (File file : filesList) {
             if (file.isFile()){
                 //this.getLogger().log(Level.INFO,"FileName: "+file.getName());
@@ -98,7 +85,9 @@ public final class AdditionalBlocks extends JavaPlugin {
             }
         }
 
-        itemHandler = new ItemHandler();
+
+        //Creates all custom predicates from the paper.json
+        itemHandler = new ItemHandler("/pack/assets/minecraft/models/item/paper.json");
         guiHandler = new GUIHandler(itemHandler);
 
         //register Listeners

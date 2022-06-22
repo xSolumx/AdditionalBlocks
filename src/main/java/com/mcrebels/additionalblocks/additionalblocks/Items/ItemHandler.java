@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Level;
 
+
+// THIS CLASS HANDLES A SINGLE JSON FILES OVERRIDE ITEMS
+
 public class ItemHandler {
-    public static enum Categories{BUILDING,DECORATION,PLANTS,MISC}
+    private String filepath;
     public static NamespacedKey ITEM_ID = new NamespacedKey(AdditionalBlocks.get(),"id");
     public static NamespacedKey CATEGORY_ID = new NamespacedKey(AdditionalBlocks.get(),"catid");
 
@@ -21,10 +24,12 @@ public class ItemHandler {
     private ArrayList<ItemBuilder> itemBuildings = new ArrayList<>();
     private ArrayList<ItemBuilder> itemDecorations = new ArrayList<>();
     private ArrayList<ItemBuilder> itemNature = new ArrayList<>();
+    private ArrayList<ItemBuilder> itemUtility = new ArrayList<>();
     private ArrayList<ItemBuilder> itemWeapon = new ArrayList<>();
     private ArrayList<ItemBuilder> itemMisc = new ArrayList<>();
 
-    public ItemHandler(){
+    public ItemHandler(String file_path){
+        filepath =  file_path;
         loadCustomItems();
         sortItemsToCategories();
         //construst class
@@ -33,20 +38,16 @@ public class ItemHandler {
     public ArrayList<ItemBuilder> getItemBuildings() {
         return itemBuildings;
     }
-
     public ArrayList<ItemBuilder> getItemDecorations(){
         return itemDecorations;
-    }
-
-    public ArrayList<ItemBuilder> getItemMisc(){
-        return itemMisc;
     }
     public ArrayList<ItemBuilder> getItemNature() {
         return itemNature;
     }
-
-    public ArrayList<ItemBuilder> getItemWeapon() {
-        return itemWeapon;
+    public ArrayList<ItemBuilder> getItemUtility(){return itemUtility;}
+    public ArrayList<ItemBuilder> getItemWeapon(){return itemWeapon;}
+    public ArrayList<ItemBuilder> getItemMisc(){
+        return itemMisc;
     }
 
     public void sortItemsToCategories(){
@@ -67,6 +68,12 @@ public class ItemHandler {
                 itemNature.add(i);
                 Bukkit.getLogger().log(Level.INFO,"added natureItem: " + i.build().getItemMeta().getPersistentDataContainer().get(CATEGORY_ID,PersistentDataType.STRING));
             }
+            if (Objects.equals(category,"utility")){
+                itemUtility.add(i);
+            }
+            if (Objects.equals(category,"weapon")){
+                itemWeapon.add(i);
+            }
             if (Objects.equals(category, "misc")){
                 itemMisc.add(i);
                 Bukkit.getLogger().log(Level.INFO,"added miscItem: " + i.build().getItemMeta().getPersistentDataContainer().get(CATEGORY_ID,PersistentDataType.STRING));
@@ -77,10 +84,10 @@ public class ItemHandler {
         Bukkit.getLogger().log(Level.INFO,"Loaded " + itemBuildings.size() + " Building Items");
     }
 
-    private static void loadCustomItems(){
+    private void loadCustomItems(){
         try {
-            allItems.addAll(JSONParser.parseIB( AdditionalBlocks.get().getDataFolder()+"\\pack\\assets\\minecraft\\models\\item\\paper.json"));
-            Bukkit.getLogger().log(Level.INFO,"==============Itemhandler loaded===============");
+            allItems.addAll(JSONParser.parseIB( AdditionalBlocks.get().getDataFolder()+filepath));
+            Bukkit.getLogger().log(Level.INFO,"=^=^=^===========Itemhandler loaded============^=^=^=");
         } catch (Exception e) {
             e.printStackTrace();
         }

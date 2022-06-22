@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
 import java.util.logging.Level;
@@ -39,15 +40,18 @@ public class customModelPlacement implements Listener {
                         Block relative = clickedBlock.getRelative(e.getBlockFace());
                         Location relaLocation = relative.getLocation().clone().toCenterLocation();
                         relaLocation.setDirection(e.getPlayer().getFacing().getDirection());
+                        BoundingBox.of(relaLocation,1.0,0.5,1.0);
 
-                        //relaLocation.getBlock().setType(Material.BARRIER);
-                        Slime slime = relaLocation.getWorld().spawn(relaLocation.clone().add(0,-0.5,0),Slime.class);
+                        relaLocation.getBlock().setType(Material.BARRIER);
+                        /*Slime slime = relaLocation.getWorld().spawn(relaLocation.clone().add(0,-0.5,0),Slime.class);
                         slime.setSize(2);
                         slime.setWander(false);
                         slime.setAI(false);
                         slime.setInvisible(true);
                         slime.setInvulnerable(true);
                         slime.setCustomName("njksdfhlvksyugksdfygysdfuvsjksdf");
+
+                         */
 
                         ArmorStand as = relaLocation.getWorld().spawn(relaLocation, ArmorStand.class);
                         //as.setRotation(e.getPlayer().getFacing().getDirection());
