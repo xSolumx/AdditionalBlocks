@@ -1,5 +1,4 @@
 package com.mcrebels.additionalblocks.additionalblocks.GUI;
-
 import com.mcrebels.additionalblocks.additionalblocks.Items.ItemHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -43,11 +42,11 @@ public class GUIHandler implements Listener {
     private Integer miscSize;
 
 
-    private Component titleSection = Component.text(" §f\uF80C\uF809\uF80A\uF809\uF808\uF803\ue001");
-    private Component navBar = Component.text("§f\uF808%n%\uF808%n%\uF808%n%\uF808%n%\uF808%n%\uF808%n%\uF808%n%\uF808%n%\uF808%n%");
+    private Component titleSection = Component.text("§f \uF80C\uF809\uF80A\uF808\uF803\ue211");
+    private Component navBar = Component.text("§f \uF805%n%\uF805%n%\uF805%n%\uF805%n%\uF805%n%\uF805%n%\uF805%n%\uF805%n%");
     private Component scrollBar = Component.text("");
 
-    private Component title = Component.text("§f\uF808\ue238\uF808\ue000\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239 §f\uF80C\uF809\uF80A\uF809\uF808\uF803\ue001");
+    private Component oldtitle = Component.text("§f\uF808\ue238\uF808\ue000\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239\uF808\ue239 §f\uF80C\uF809\uF80A\uF809\uF808\uF803\ue211");
 
     public GUIHandler(ItemHandler handler){
         this.handler = handler;
@@ -96,14 +95,17 @@ public class GUIHandler implements Listener {
         Component navreturn = navBar;
         for (int i=0; i<9; i++){
                 if (i == guiSlot){
-                    navreturn = navreturn.replaceText(TextReplacementConfig.builder().match("%n%").replacement("§f\ue238").times(1).build());
+                    //replace with navbar green, this is the active tab
+                    navreturn = navreturn.replaceText(TextReplacementConfig.builder().match("%n%").replacement("§f\ue212").times(1).build());
                 }
                 else {
                     if (i <= 3){
-                        navreturn = navreturn.replaceText(TextReplacementConfig.builder().match("%n%").replacement("§f\ue000").times(1).build());
+                        //inactive but present tabs, replace with red
+                        navreturn = navreturn.replaceText(TextReplacementConfig.builder().match("%n%").replacement("§f\ue213").times(1).build());
                     }
                     else {
-                        navreturn = navreturn.replaceText(TextReplacementConfig.builder().match("%n%").replacement("§f\ue239").times(1).build());
+                        //nonexistant slots, replace with grey
+                        navreturn = navreturn.replaceText(TextReplacementConfig.builder().match("%n%").replacement("§f\ue214").times(1).build());
                     }
                 }
         }
@@ -119,7 +121,7 @@ public class GUIHandler implements Listener {
     }
 
     public void changeTab(HumanEntity ent, Integer page){
-        Bukkit.getLogger().log(Level.WARNING,mainGUIs.size() + " Main GUIs exist");
+        //Bukkit.getLogger().log(Level.WARNING,mainGUIs.size() + " Main GUIs exist");
         try {
             mainGUIs.get(page).openInventory(ent);
         }catch (Exception e){

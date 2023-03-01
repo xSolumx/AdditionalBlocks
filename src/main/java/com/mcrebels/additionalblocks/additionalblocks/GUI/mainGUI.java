@@ -90,6 +90,10 @@ public class mainGUI implements Listener {
             }
             else if (counter < 54){
                 counter++;
+                inv.setItem(counter, null);
+                inv.setItem(counter, is);
+                counter++;
+                itemsset++;
             }
         }
         counter = 9;

@@ -1,14 +1,15 @@
 package com.mcrebels.additionalblocks.additionalblocks;
 import com.mcrebels.additionalblocks.additionalblocks.GUI.GUIHandler;
-import com.mcrebels.additionalblocks.additionalblocks.GUI.mainGUI;
 import com.mcrebels.additionalblocks.additionalblocks.Items.ItemHandler;
 import com.mcrebels.additionalblocks.additionalblocks.Listeners.commandListener;
 import com.mcrebels.additionalblocks.additionalblocks.Listeners.customModelPlacement;
-import com.mcrebels.additionalblocks.additionalblocks.util.JSONParser;
+import com.mcrebels.additionalblocks.additionalblocks.util.pngParser;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URI;
@@ -25,6 +26,7 @@ import java.util.zip.ZipInputStream;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public final class AdditionalBlocks extends JavaPlugin {
+
     private static AdditionalBlocks additionalBlocks;
     private static ArrayList<ItemStack> allCustomItems = new ArrayList<>();
 
@@ -47,19 +49,20 @@ public final class AdditionalBlocks extends JavaPlugin {
     @Override
     public void onEnable() {
         additionalBlocks = this;
-        this.getLogger().log(Level.INFO,"Downloading resource pack...");
+        this.getLogger().log(Level.INFO, "======================================");
+        this.getLogger().log(Level.INFO, "|     Loading AdditionalBlocks     |");
+        this.getLogger().log(Level.INFO, "======================================");
+        this.saveDefaultConfig();
+        this.getLogger().log(Level.INFO,"|      Downloading resource pack...");
         //Downloads resource pack file from source and directly unpacks it
         //Would be nice to set up an auto release for the texture pack on github for this
-        try {
-            BufferedInputStream is = new BufferedInputStream(new URL("https://www.dropbox.com/s/h9fgwyzva2xddez/pack.zip?dl=1").openStream());
-            this.getLogger().log(Level.INFO,"Unpacking resource pack...");
-            unzip(is, Paths.get(getDataFolder() + "/pack"));
-            this.getLogger().log(Level.WARNING, "Extraction succesful");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        loadResourcePack();
+
+
+        /*
 
         //Attempts to get all Json files in the target directory
+
         File directoryPath = new File(getDataFolder()+"/pack/assets/mcrebels/models");
 
         FilenameFilter jsonfilter = new FilenameFilter() {
@@ -83,10 +86,17 @@ public final class AdditionalBlocks extends JavaPlugin {
                 //this.getLogger().log(Level.INFO,"FileName: "+file.getName());
                 modelList.add(file);
             }
-        }
+        */
+
+        pngParser pngParser = new pngParser();
+        pngParser.readFiles();
 
 
-        //Creates all custom predicates from the paper.json
+        //===============
+        //   IMPORTANT
+        //===============
+        //Creates all custom predicates using the paper.json as a base
+
         itemHandler = new ItemHandler("/pack/assets/minecraft/models/item/paper.json");
         guiHandler = new GUIHandler(itemHandler);
 
@@ -95,8 +105,28 @@ public final class AdditionalBlocks extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new customModelPlacement(), this);
 
         //register GUI Command
-        this.getCommand("ci").setExecutor(new commandListener());
-        this.getCommand("openinv").setExecutor(new commandListener());
+        this.getCommand("custominv").setExecutor(new commandListener());
+        this.getCommand("extrablocks").setExecutor(new commandListener());
+    }
+
+    public void loadResourcePack(){
+        try {
+            BufferedInputStream is = new BufferedInputStream(new
+                    URL(this.getConfig().getString("RPdownloadlink")).openStream()
+            );
+            if (Files.deleteIfExists(Path.of(getDataFolder() + "/pack"))){
+                //texture pack deleted
+                this.getLogger().log(Level.INFO,"Previous Resource Pack Replaced\nUnpacking resource pack...");
+                unzip(is, Paths.get(getDataFolder() + "/pack"));
+            }
+            else {
+                this.getLogger().log(Level.INFO,"Unpacking resource pack...");
+                unzip(is, Paths.get(getDataFolder() + "/pack"));
+            }
+        }catch (Exception e){
+            this.getLogger().log(Level.WARNING, "Resource Pack Not Loaded\n---------------\n");
+            e.printStackTrace();
+        }
     }
 
 

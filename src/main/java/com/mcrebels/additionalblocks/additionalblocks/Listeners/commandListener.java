@@ -22,12 +22,14 @@ public class commandListener implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player){
-            Player player = (Player) sender;
-            AdditionalBlocks.getGuiHandler().changeTab(player, 0);
-            }else {
-                Bukkit.getLogger().log(Level.WARNING,"Command sender not Player");
+        if (sender instanceof Player) {
+            if (sender.hasPermission("additionalblocks.admin")) {
+                Player player = (Player) sender;
+                AdditionalBlocks.getGuiHandler().changeTab(player, 0);
+            } else {
+                Bukkit.getLogger().log(Level.WARNING, "Command sender not Player");
             }
+        }
         return true;
         }
 

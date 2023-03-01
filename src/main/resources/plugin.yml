@@ -5,7 +5,9 @@ api-version: 1.18
 authors: [ xSolum ]
 description: add more blocks
 commands:
-  ci:
+  custominv:
     description: opens block inventory
-  openinv:
+    permission: additionalblocks.admin
+  extrablocks:
     description: ^^
+    permission: additionalblocks.admin
