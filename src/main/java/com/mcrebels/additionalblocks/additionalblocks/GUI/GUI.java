@@ -12,8 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.concurrent.CompletionException;
 
+// NOT IN USE
 public class GUI {
-
+    // NOT IN USE
     private final Component Title;
     private final InventoryType InventoryType;
     private final List<ItemStack> Items;

@@ -26,6 +26,7 @@ public class GUIHandler implements Listener {
     }
 
 
+    //
     private List<mainGUI> mainGUIs = new ArrayList<>();
     public List<mainGUI> getMainGUIs() {
         return mainGUIs;
@@ -65,6 +66,8 @@ public class GUIHandler implements Listener {
 
     }
 
+
+    //This should create the main GUI tabs
     public void createMainGuis(){
         if (buildingSize >= 0){
             mainGUI buildingGUI = new mainGUI(0);
@@ -120,6 +123,7 @@ public class GUIHandler implements Listener {
         }
     }
 
+    //Opens and changes the tab of the GUI
     public void changeTab(HumanEntity ent, Integer page){
         //Bukkit.getLogger().log(Level.WARNING,mainGUIs.size() + " Main GUIs exist");
         try {
@@ -163,13 +167,14 @@ public class GUIHandler implements Listener {
                 int slotClicked = e.getRawSlot();
                 final ItemStack clickedItem = e.getCurrentItem();
 
-                //gives the player an item and resets it in the GUI
+                //gives the player an item on cursor and resets it in the GUI
                 if (e.getWhoClicked().getItemOnCursor().getType() != Material.AIR){
                     if (e.getRawSlot() < 54) {
                         e.setCancelled(true);
                         e.getWhoClicked().setItemOnCursor(clickedItem);
                     }
                 }
+                //Honestly have no idea why i need this repeated code, but it breaks without it
                 else {
                     if (e.getRawSlot() <54) {
                         e.setCancelled(true);
@@ -177,7 +182,6 @@ public class GUIHandler implements Listener {
                     }
                 }
                 break;
-
             }
             else {
                 //debugging block

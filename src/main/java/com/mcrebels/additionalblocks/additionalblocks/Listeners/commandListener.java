@@ -27,7 +27,7 @@ public class commandListener implements CommandExecutor {
                 Player player = (Player) sender;
                 AdditionalBlocks.getGuiHandler().changeTab(player, 0);
             } else {
-                Bukkit.getLogger().log(Level.WARNING, "Command sender not Player");
+                Bukkit.getLogger().log(Level.WARNING, "Cannot execute from console");
             }
         }
         return true;

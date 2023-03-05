@@ -45,6 +45,8 @@ public class customModelPlacement implements Listener {
                             BoundingBox.of(relaLocation, 1.0, 0.5, 1.0);
 
                             relaLocation.getBlock().setType(Material.BARRIER);
+
+                        //Use this for bouncy block bounds
                         /*Slime slime = relaLocation.getWorld().spawn(relaLocation.clone().add(0,-0.5,0),Slime.class);
                         slime.setSize(2);
                         slime.setWander(false);
@@ -54,6 +56,7 @@ public class customModelPlacement implements Listener {
                         slime.setCustomName("njksdfhlvksyugksdfygysdfuvsjksdf");
 
                          */
+                            //attaching the item to an armour stand
                             ArmorStand as = relaLocation.getWorld().spawn(relaLocation, ArmorStand.class);
                             as.setItem(EquipmentSlot.HEAD, e.getPlayer().getInventory().getItemInMainHand());
                             as.setArms(false);
@@ -68,6 +71,7 @@ public class customModelPlacement implements Listener {
                         }
                     }
                 } else {
+
                     //Bukkit.getLogger().log(Level.INFO, "This item is not custom");
                 }
             }
@@ -108,7 +112,7 @@ public class customModelPlacement implements Listener {
 
     @EventHandler
     public void onSelectBlockClick(PlayerInteractEvent e){
-
+        //to be implemented
     }
 
     public static final BlockFace[] axis = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
